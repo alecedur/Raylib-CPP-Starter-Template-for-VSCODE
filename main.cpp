@@ -1,43 +1,57 @@
 #include <iostream>
 #include <raylib.h>
 
-using namespace std;
+Color green = {173, 204, 96, 255};
+Color darkGreen = {43, 51, 24, 255};
+
+int cellSize = 30;
+int cellCount = 25;
+
+class Food {
+public:
+    Vector2 position;
+    Texture2D texture;
+
+    Food(){
+        Image image = LoadImage("Graphics/food.png");
+        texture = LoadTextureFromImage(image);
+        UnloadImage(image);
+        position = generateRandomPos();
+    }
+
+    ~Food(){
+        UnloadTexture(texture);
+    }
+
+    void Draw() {
+        DrawTexture(texture, position.x * cellSize, position.y * cellSize, WHITE);
+
+    }
+
+    Vector2 generateRandomPos(){
+        float x = GetRandomValue(0, cellCount - 1);
+        float y = GetRandomValue(0, cellCount - 1);
+        return Vector2{x, y};
+    }
+};
 
 int main () {
 
-    const int SCREEN_WIDTH = 800;
-    const int SCREEN_HEIGHT = 600;
-    int ball_x = 100;
-    int ball_y = 100;
-    int ball_speed_x = 5;
-    int ball_speed_y = 5;
-    int ball_radius = 15;
-
-    cout << "Hello World" << endl;
-
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My first RAYLIB program!");
+    std::cout << "Starting the game" << std::endl;
+    InitWindow(cellSize * cellCount, cellSize * cellCount, "Retro Snake");
     SetTargetFPS(60);
 
-    while (WindowShouldClose() == false){
-   
-        ball_x += ball_speed_x;
-        ball_y += ball_speed_y;
+    Food food = Food();
 
-        if(ball_x + ball_radius >= SCREEN_WIDTH || ball_x - ball_radius <= 0)
-        {
-            ball_speed_x *= -1;
-        }
-
-        if(ball_y + ball_radius >= SCREEN_HEIGHT || ball_y - ball_radius <= 0)
-        {
-            ball_speed_y *= -1;
-        }
-        
+    while(WindowShouldClose() == false){
         BeginDrawing();
-            ClearBackground(BLACK);
-            DrawCircle(ball_x,ball_y,ball_radius, WHITE);
+        // Drawing
+        ClearBackground(green);
+        food.Draw();
+
         EndDrawing();
     }
 
     CloseWindow();
+    return 0;
 }
