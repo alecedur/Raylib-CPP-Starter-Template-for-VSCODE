@@ -41,7 +41,7 @@
           "stopAtEntry": false,
           "cwd": "${workspaceFolder}",
           "environment": [],
-          "externalConsole": false,
+          "externalConsole": true,
           "program": "${workspaceFolder}/${fileBasenameNoExtension}",
           "MIMode": "gdb",
           "windows": {
